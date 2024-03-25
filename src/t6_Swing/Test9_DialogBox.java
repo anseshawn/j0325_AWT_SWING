@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class Test9_DialogBox extends JFrame {
 	JPanel pn1, pn2;
 	JButton btn1, btn2, btn3, btn4, btn5;
