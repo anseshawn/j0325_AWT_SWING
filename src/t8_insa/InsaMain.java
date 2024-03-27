@@ -9,6 +9,8 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 
 public class InsaMain extends JFrame{
@@ -72,20 +74,30 @@ public class InsaMain extends JFrame{
 		setVisible(true);
 		// ---------------------------------------아래쪽은 메소드------------------------------
 		
-		// 종료
+		// 종료 버튼 마우스 클릭시 수행
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}
 		});
+		// 종료 버튼 키보드 엔터시 수행
+		btnExit.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				System.exit(0);
+			};
+		});
+
 		
 		// 전체 조회 버튼
 		btnList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				dispose();
+				new InsaList();
 			}
 		});
 		
-		// 개별 조회 버튼
+		
+		// 개별 조회 버튼 마우스 클릭시 수행
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = JOptionPane.showInputDialog("검색할 성명을 입력하세요.");
@@ -97,10 +109,27 @@ public class InsaMain extends JFrame{
 					dispose();
 					new InsaSearch(vo);
 				}
+				dao.connClose();
+			}
+		});
+		// 개별 조회 버튼 엔터키로 수행
+		btnSearch.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				String name = JOptionPane.showInputDialog("검색할 성명을 입력하세요.");
+				InsaDAO dao = new InsaDAO();
+				InsaVO vo = dao.getNameSearch(name);
+				
+				if(vo.getName() == null) JOptionPane.showMessageDialog(null, "검색한 회원이 없습니다.");
+				else {
+					dispose();
+					new InsaSearch(vo);
+				}
+				dao.connClose();
 			}
 		});
 		
-		// 사원 등록 버튼
+		
+		// 사원 등록 버튼을 마우스로 수행
 		btnInput.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// System.exit(0); -> JVM을 완전히 닫아버림
@@ -108,6 +137,14 @@ public class InsaMain extends JFrame{
 				new InsaInput();
 			}
 		});
+		// 사원 등록 버튼을 키보드 엔터키로 수행
+		btnInput.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				dispose();
+				new InsaInput();
+			}
+		});
+		
 	}
 	
 	public static void main(String[] args) {
